@@ -2,11 +2,11 @@
 //  AppDelegate.swift
 //  ParseChat
 //
-//  Created by Tony Mendoza on 11/12/18.
 //  Copyright © 2018 jmaciel. All rights reserved.
 //
 
 import UIKit
+import Parse
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -15,7 +15,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        
+        Parse.initialize(with: ParseClientConfiguration(block: { (configuration: ParseMutableClientConfiguration) in
+            configuration.applicationId = "CodePath-Parse"
+            configuration.server = "http://45.79.67.127:1337/parse"
+        }))
+
+        
+        // Code to initialize Parse
+        // (See above section 'Parse `initializeWithConfiguration` vs `setApplicationId`', if you have not already set it up)
+        
+        // check if user is logged in.
+        if PFUser.current() != nil {
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            // view controller currently being set in Storyboard as default will be overridden
+            window?.rootViewController = storyboard.instantiateViewController(withIdentifier: "NavigationController")
+        }
+        
         return true
     }
 
